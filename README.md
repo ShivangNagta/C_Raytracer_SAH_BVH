@@ -1,6 +1,4 @@
-# CS201_SAH-BVH_Ray_Tracer
-
-This is the final project submission for the CS201 (Data Structure) Course.
+# SAH-BVH_Ray_Tracer_C
 
 This project aims to improve the efficiency of ray intersection tests in ray tracing by building upon a bounding volume hierarchy (BVH) structure for storing the scene primitives. Further Surface Area Heuristics (SAH) is used for efficient building of the BVH. The raytracer is just using CPU as of now. A naive implementation of microfacet model is used for material properties. Only diffuse materials are added for now with predefined values. Other material properties are not included for simplicity.
 

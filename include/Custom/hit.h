@@ -13,7 +13,10 @@ typedef struct {
     int hit_something;
     ObjectType type;
     Object object;
-    // void *object;
+
+    float barycentric_u;
+    float barycentric_v;
+    float barycentric_w;
 
 } HitRecord;
 

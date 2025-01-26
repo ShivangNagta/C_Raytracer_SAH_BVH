@@ -109,6 +109,73 @@ HitRecord ray_triangle_intersect(Ray ray, Triangle *triangle) {
 }
 
 
+// HitRecord ray_triangle_intersect(Ray ray, Triangle *triangle) {
+//     HitRecord rec = {0};
+    
+//     // Edge vectors
+//     Vec3 edge1 = vec3_sub(triangle->vertices[1], triangle->vertices[0]);
+//     Vec3 edge2 = vec3_sub(triangle->vertices[2], triangle->vertices[0]);
+    
+//     // Calculate determinant (ray direction cross edge2)
+//     Vec3 h = vec3_cross(ray.direction, edge2);
+//     float a = vec3_dot(edge1, h);
+    
+//     // Check if ray is parallel to triangle
+//     if (fabs(a) < EPSILON) {
+//         return rec;
+//     }
+    
+//     // Calculate barycentric coordinate u
+//     float f = 1.0f / a;
+//     Vec3 s = vec3_sub(ray.origin, triangle->vertices[0]);
+//     float u = f * vec3_dot(s, h);
+    
+//     // Check if intersection point is outside triangle
+//     if (u < 0.0f || u > 1.0f) {
+//         return rec;
+//     }
+    
+//     // Calculate barycentric coordinate v
+//     Vec3 q = vec3_cross(s, edge1);
+//     float v = f * vec3_dot(ray.direction, q);
+    
+//     // Check if intersection point is outside triangle
+//     if (v < 0.0f || u + v > 1.0f) {
+//         return rec;
+//     }
+    
+//     // Calculate distance to intersection point
+//     float t = f * vec3_dot(edge2, q);
+    
+//     // Check if intersection point is in front of ray origin
+//     if (t > EPSILON) {
+//         rec.hit_something = 1;
+//         rec.t = t;
+//         rec.point = vec3_add(ray.origin, vec3_multiply(ray.direction, t));
+        
+//         // Calculate barycentric coordinate w
+//         float w = 1.0f - u - v;
+        
+//         // Interpolate normal using barycentric coordinates
+//         rec.normal = vec3_normalize(vec3_add(
+//             vec3_add(
+//                 vec3_multiply(triangle->normals[0], w),
+//                 vec3_multiply(triangle->normals[1], u)),
+//             vec3_multiply(triangle->normals[2], v)
+//         ));
+
+//         rec.type = TRIANGLE;
+//         rec.object.triangle = *triangle;
+//         rec.barycentric_u = u; // Store u for later use
+//         rec.barycentric_v = v; // Store v for later use
+//         rec.barycentric_w = w; // Store w for later use
+//         return rec;
+//     }
+    
+//     return rec;
+// }
+
+
 
 
 //--------------------------------------------------------------------------------------------------

@@ -3,7 +3,7 @@ CC := gcc
 CFLAGS := -Wall -Iinclude 
 
 # Source and target
-SRC := src/vec3.c src/camera.c src/sphere.c src/ray.c src/bvh.c src/hit.c src/renderer.c src/main.c src/benchmark.c src/bvh_visualiser.c src/triangle.c src/world_object.c src/scene.c src/premade_scene.c
+SRC := src/vec3.c src/camera.c src/sphere.c src/ray.c src/bvh.c src/hit.c src/renderer.c src/main.c src/benchmark.c src/bvh_visualiser.c src/triangle.c src/world_object.c src/scene.c src/premade_scene.c src/obj_parser.c
 TARGET := raytracer
 
 # OS-specific settings

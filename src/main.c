@@ -36,90 +36,7 @@ void display_plot_with_sdl(SDL_Renderer *renderer);
 
 //----------------------------------------------------------------------------------------------------
 
-#include <string.h>
 
-#define MAX_VERTICES 10000
-#define MAX_TRIANGLES 10000
-#define MAX_LINE_LENGTH 256
-
-typedef struct {
-    float x, y, z;
-} Vertex;
-
-typedef struct {
-    int v1, v2, v3;  // Vertex indices for triangle
-    SDL_Color color; // Optional color for triangle
-} ObjTriangle;
-
-typedef struct {
-    Vertex vertices[MAX_VERTICES];
-    ObjTriangle triangles[MAX_TRIANGLES];
-    int vertexCount;
-    int triangleCount;
-} Model;
-
-Model load_model_from_obj(const char* filename) {
-    Model model = {0};
-    FILE* file = fopen(filename, "r");
-    
-    if (!file) {
-        fprintf(stderr, "Error opening OBJ file: %s\n", filename);
-        return model;
-    }
-
-    char line[MAX_LINE_LENGTH];
-    while (fgets(line, sizeof(line), file)) {
-        // Vertex parsing
-        if (strncmp(line, "v ", 2) == 0) {
-            if (model.vertexCount < MAX_VERTICES) {
-                Vertex* v = &model.vertices[model.vertexCount++];
-                sscanf(line, "v %f %f %f", &v->x, &v->y, &v->z);
-            }
-        }
-        
-        // Face parsing (triangles only)
-        if (strncmp(line, "f ", 2) == 0) {
-            if (model.triangleCount < MAX_TRIANGLES) {
-                ObjTriangle* t = &model.triangles[model.triangleCount++];
-                // Assumes vertex indices start at 1
-                sscanf(line, "f %d %d %d", 
-                    &t->v1, &t->v2, &t->v3);
-                
-                // Default color (black)
-                t->color = (SDL_Color){0, 0, 0, 255};
-            }
-        }
-    }
-
-    fclose(file);
-    return model;
-}
-
-// Convert loaded Model to scene triangles
-void convert_model_to_scene_triangles(Model* model, Scene* scene) {
-    for (int i = 0; i < model->triangleCount; i++) {
-        ObjTriangle* objTri = &model->triangles[i];
-        
-        // Create triangle vertices from model's vertex data
-        Vec3 vertices[3] = {
-            {model->vertices[objTri->v1 - 1].x*100, 
-             model->vertices[objTri->v1 - 1].y*100, 
-             model->vertices[objTri->v1 - 1].z*100},
-            {model->vertices[objTri->v2 - 1].x*100, 
-             model->vertices[objTri->v2 - 1].y*100, 
-             model->vertices[objTri->v2 - 1].z*100},
-            {model->vertices[objTri->v3 - 1].x*100, 
-             model->vertices[objTri->v3 - 1].y*100, 
-             model->vertices[objTri->v3 - 1].z*100}
-        };
-
-        // Create triangle for scene
-        SDL_Color color = {0,0,0,255};
-        Triangle triangle = create_triangle(vertices, color);
-        WorldObject triangleObj = {.type = TRIANGLE, .data.triangle = triangle};
-        add_object_to_scene(scene, &triangleObj);
-    }
-}
 
 
 #ifdef __APPLE__
@@ -282,18 +199,7 @@ int SDL_main(int argc, char *argv[])
         //     spheres[i] = create_random_sphere();
         // }
 
-        // Scene *scene = scene_2();
-        Scene *scene = (Scene *) malloc(sizeof(Scene));
-        scene->count = 0;
-        scene->maxCount = MAX_OBJECTS;
-
-        Model model = load_model_from_obj("./src/bunny.obj");
-        convert_model_to_scene_triangles(&model, scene);
-        Sphere sphere1 = create_sphere(((Vec3){0.0f, -93.0f, 30.0f}), 100.0f);
-        WorldObject sphereObject1 = {.type = SPHERE, .data.sphere = sphere1};
-        WorldObject sphereObject2 = { .type = SPHERE, .data.sphere = create_sphere(((Vec3){20.0f, 10.0f, -20.0f}), 20.0f)};
-        add_object_to_scene( scene , &sphereObject1);
-        add_object_to_scene ( scene, &sphereObject2);
+        Scene *scene = scene_3();
 
 
 
